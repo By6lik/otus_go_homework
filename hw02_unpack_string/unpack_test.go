@@ -16,6 +16,9 @@ func TestUnpack(t *testing.T) {
 		{input: "abccd", expected: "abccd"},
 		{input: "", expected: ""},
 		{input: "aaa0b", expected: "aab"},
+		{input: "\n5abc", expected: "\n\n\n\n\nabc"},
+		{input: "正字5abc", expected: "正字字字字字abc"},
+		{input: " Z%3 ", expected: " Z%%% "},
 		// uncomment if task with asterisk completed
 		// {input: `qwe\4\5`, expected: `qwe45`},
 		// {input: `qwe\45`, expected: `qwe44444`},
@@ -34,7 +37,7 @@ func TestUnpack(t *testing.T) {
 }
 
 func TestUnpackInvalidString(t *testing.T) {
-	invalidStrings := []string{"3abc", "45", "aaa10b"}
+	invalidStrings := []string{"3abc", "45", "aaa10b", "a22"}
 	for _, tc := range invalidStrings {
 		tc := tc
 		t.Run(tc, func(t *testing.T) {
@@ -42,4 +45,11 @@ func TestUnpackInvalidString(t *testing.T) {
 			require.Truef(t, errors.Is(err, ErrInvalidString), "actual error %q", err)
 		})
 	}
+}
+
+func TestUnpackSpacesStrings(t *testing.T) {
+	const str, want = "  ", "  "
+	got, err := Unpack(str)
+	require.NoError(t, err)
+	require.Equal(t, want, got)
 }
