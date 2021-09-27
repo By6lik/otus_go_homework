@@ -20,12 +20,10 @@ func ReplaceSpace(t string) string {
 func Top10(t string) []string {
 	result := []string{}
 	tempMap := map[string]int{}
-	if len(t) == 0 {
-		result = []string{}
-	} else {
+	if len(t) > 0 {
 		text := strings.Join(strings.Fields(t), " ")
 		splitedText := strings.Split(text, " ")
-		A := []WordCount{}
+		w := []WordCount{}
 		for word := range splitedText {
 			if tempMap[splitedText[word]] == 0 {
 				tempMap[splitedText[word]] = 1
@@ -34,20 +32,26 @@ func Top10(t string) []string {
 			}
 		}
 		for i, j := range tempMap {
-			A = append(A, WordCount{i, j})
+			w = append(w, WordCount{i, j})
 		}
-		sort.Slice(A, func(i, j int) bool { return A[i].count > A[j].count })
-		A = A[0:10]
-		sort.Slice(A, func(i, j int) bool {
-			if A[i].count == A[j].count {
-				return A[i].expression < A[j].expression
+		sort.Slice(w, func(i, j int) bool { return w[i].count > w[j].count })
+		switch {
+		case len(w) < 10:
+			w = w[0:]
+		default:
+			w = w[0:10]
+		}
+		sort.Slice(w, func(i, j int) bool {
+			if w[i].count == w[j].count {
+				return w[i].expression < w[j].expression
 			}
 			return false
 		})
-		for i := range A {
-			result = append(result, A[i].expression)
+		for i := range w {
+			result = append(result, w[i].expression)
 		}
+	} else {
+		result = []string{}
 	}
-
 	return result
 }

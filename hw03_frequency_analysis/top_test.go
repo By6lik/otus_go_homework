@@ -81,3 +81,15 @@ func TestTop10(t *testing.T) {
 		}
 	})
 }
+
+func TestLessTenWords(t *testing.T) {
+	textWithTab := `			Слово					слово			слово	
+	и
+				`
+	expected := []string{
+		"слово",
+		"Слово",
+		"и",
+	}
+	require.Equal(t, expected, Top10(textWithTab))
+}
