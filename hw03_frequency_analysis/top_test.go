@@ -1,6 +1,7 @@
 package hw03frequencyanalysis
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -47,7 +48,7 @@ func TestTop10(t *testing.T) {
 	t.Run("no words in empty string", func(t *testing.T) {
 		require.Len(t, Top10(""), 0)
 	})
-
+	fmt.Println(t)
 	t.Run("positive test", func(t *testing.T) {
 		if taskWithAsteriskIsCompleted {
 			expected := []string{
@@ -79,4 +80,16 @@ func TestTop10(t *testing.T) {
 			require.Equal(t, expected, Top10(text))
 		}
 	})
+}
+
+func TestLessTenWords(t *testing.T) {
+	textWithTab := `			Слово					слово			слово	
+	и
+				`
+	expected := []string{
+		"слово",
+		"Слово",
+		"и",
+	}
+	require.Equal(t, expected, Top10(textWithTab))
 }
