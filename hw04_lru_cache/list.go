@@ -24,29 +24,28 @@ func (l *list) MoveToFront(i *ListItem) {
 	if l.size == 1 {
 		return
 	}
-	var varTemp = l.Extract(i)
+	varTemp := l.Extract(i)
 	l.head.Prev = varTemp
 	varTemp.Next = l.head
 	l.head = varTemp
 	l.size++
 }
 
-
 func (l *list) Extract(i *ListItem) *ListItem {
 	if i == nil {
 		return i
 	}
-	if i == l.head {
+	switch {
+	case i == l.head:
 		l.head = i.Next
 		l.head.Prev = nil
 		i.Prev = nil
-
-	} else if i == l.tail {
+	case i == l.tail:
 		l.tail = i.Prev
-		
+
 		l.tail.Next = nil
 		i.Prev = nil
-	} else {
+	default:
 		i.Next.Prev = i.Prev
 		i.Prev.Next = i.Next
 		i.Prev = nil
@@ -76,7 +75,6 @@ func (l *list) PushFront(v interface{}) *ListItem {
 		l.head = item
 		l.tail = item
 	} else {
-
 		item.Next = l.head
 		l.head.Prev = item
 		l.head = item
@@ -100,8 +98,6 @@ func (l *list) PushBack(v interface{}) *ListItem {
 	}
 	return l.tail
 }
-
-
 
 type list struct {
 	head, tail *ListItem
