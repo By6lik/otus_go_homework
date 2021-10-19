@@ -1,5 +1,7 @@
 package hw04lrucache
 
+import "fmt"
+
 type Key string
 
 type Cache interface {
@@ -29,15 +31,18 @@ func (lru *lruCache) Set(key Key, value interface{}) bool {
 		a.value = value
 		lru.queue.MoveToFront(item)
 		return true
-	case len(lru.items) == lru.capacity:
-		m := lru.queue.Back()
-		lru.queue.Remove(m)
-		delete(lru.items, m.Value.(*cacheItem).key)
+	case item == nil:
+		if len(lru.items) == lru.capacity {
+			m := lru.queue.Back()
+			lru.queue.Remove(m)
+			delete(lru.items, m.Value.(*cacheItem).key)
+		}
 		c := cacheItem{key, value}
 		lru.items[key] = lru.queue.PushFront(&c)
 		return false
 	default:
-		return true
+		fmt.Println("qwe")
+		return false
 	}
 }
 
