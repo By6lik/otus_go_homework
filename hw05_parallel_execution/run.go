@@ -11,7 +11,7 @@ import (
 
 var ( 
 ErrErrorsLimitExceeded = errors.New("errors limit exceeded")
-ErrInlvalidn = errors.New("n shoulb be more than zero")
+ErrInlvalidn = errors.New("n should be more than zero")
 )
 
 type Task func() error
@@ -47,9 +47,7 @@ func Run(tasks []Task, n, m int) error {
 			}
 			ch <- task
 		}
-	
 	close(ch)
-
 	wg.Wait()
 	if  errCount >= int32(m) {
 		return ErrErrorsLimitExceeded
