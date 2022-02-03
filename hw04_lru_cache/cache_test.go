@@ -50,7 +50,28 @@ func TestCache(t *testing.T) {
 	})
 
 	t.Run("purge logic", func(t *testing.T) {
-		// Write me
+		c := NewCache(2)
+
+		c.Set("aaa", 300)
+
+		// check first element added correctly
+		_, firtsOk := c.Get("aaa")
+		require.True(t, firtsOk)
+
+		// add two another elements
+		c.Set("bbb", 300)
+		c.Set("ccc", 300)
+
+		// check element removed from cache
+		_, ok := c.Get("aaa")
+		require.False(t, ok)
+
+		// check two other elements in cache
+		_, ok = c.Get("bbb")
+		require.True(t, ok)
+
+		_, ok = c.Get("ccc")
+		require.True(t, ok)
 	})
 }
 
@@ -65,6 +86,13 @@ func TestCacheMultithreading(t *testing.T) {
 		defer wg.Done()
 		for i := 0; i < 1_000_000; i++ {
 			c.Set(Key(strconv.Itoa(i)), i)
+		}
+	}()
+
+	go func() {
+		defer wg.Done()
+		for i := 0; i < 1_000_000; i++ {
+			c.Get(Key(strconv.Itoa(rand.Intn(1_000_000))))
 		}
 	}()
 
