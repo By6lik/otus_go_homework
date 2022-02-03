@@ -1,0 +1,100 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option go_package = "google.golang.org/grpc/examples/helloworld/helloworld";
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.helloworld";
+option java_outer_classname = "HelloWorldProto";
+
+package helloworld;
+
+
+
+
+// слот ID
+message SlotId {
+  int64 id = 1;
+}
+
+// слот
+message Slot {
+  SlotId slot_id = 1;
+  string description = 2;
+}
+
+//баннер ID
+message BannerId {
+  int64 id = 1;
+}
+
+// баннер
+message Banner {
+  BannerId banner_id = 1;
+  string description = 2;
+}
+
+
+message UserGroupsId {
+  int64 id = 1;
+}
+// Соц-дем. группа пользователей
+message UserGroups {
+  UserGroupsId user_groups_id = 1;
+  string description = 2;
+}
+
+
+
+service Rotator {
+  // Добавить баннер
+  rpc AddBanner (SlotBanner) returns (google.protobuf.Empty) {}
+  
+  // Удалить баннер
+  rpc RemoveBanner (BannerSlot) returns (google.protobuf.Empty) {}
+
+  // Удалить баннер
+  rpc RemoveBanner1 (SlotBanner) returns (google.protobuf.Empty) {}
+
+  // //Засчитать переход
+  rpc  CountLinkClick(SlotBannerUser) returns (google.protobuf.Empty) {}
+
+  // //Выбрать баннер для показа
+  rpc  SelectBanner(UserGroupBanner) returns (BannerId) {}
+}
+
+// слот баннера
+message SlotBanner {
+  BannerId banner_id = 1;
+  SlotId slot_id = 2;
+}
+
+// слот баннера -- not needed
+message BannerSlot {
+  SlotId slot_id = 1;
+  BannerId banner_id = 2;
+}
+
+message SlotBannerUser {
+  SlotBanner slot_banner = 1;
+  int64 user_group_id = 2;
+}
+
+message UserGroupBanner {
+  SlotId slot_id = 1;
+  UserGroupsId user_groups_id = 2;
+}
